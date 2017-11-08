@@ -1,0 +1,46 @@
+body {
+  /*background-color: #5c6572;*/
+  background-color: #2c0003;
+  font-family: 'Spectral', serif;
+}
+
+div.search-row {
+  text-align: center;
+  margin-top: 10%;
+}
+
+input {
+  padding: 3px;
+  border-radius: 1px;
+}
+
+button {
+  padding: 3px;
+  border-radius: 1px;
+}
+
+h1.main-header {
+  margin-top: 40px;
+  color: black;
+  -webkit-text-stroke: 1px yellow;
+}
+
+p.cite {
+  margin-top: 5px;
+  color: yellow;
+}
+
+/** After Search **/
+div.poster-row {
+  text-align: center;
+}
+
+div.title-row {
+  text-align: center;
+  margin-top: 30px;
+}
+
+/** Defaults **/
+.center-text {
+  text-align: center;
+}
