@@ -9,7 +9,7 @@ $(document).ready(function() {
         Director
         Cast
       Recommended Movies
-      Fix glitch when there are no ratings
+      Fix glitch when there are no ratings (try/catch?)
   **/
 
   var $body = $("body");
@@ -33,6 +33,8 @@ $(document).ready(function() {
         "marginRight": "35%",
         "marginBottom": "2%",
         "backgroundColor": "#F1F1D4",
+        //"backgroundColor": "#dddead",
+        //"backgroundColor": "#dddeb0",
         "borderRadius": "5px"
       }).css("box-shadow", "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)");
     } else if (w < 1000) {
@@ -162,32 +164,49 @@ $(document).ready(function() {
         "paddingRight": "10px",
         "marginBottom": "25px"
       });
-
       // Add More Info Button
-      var $moreInfoRow = $("<div>").addClass("row more-info-row");
-      var $moreInfoCol = $("<div>").addClass("col-xs-12 more-info-col center-text");
-      var $arrowCol = $("<div>").addClass("col-xs-12 arrow-col center-text");
-      var $arrow = $("<img>").attr("src", "down-arrow.png").css({
-        "width": "30px",
-        "cursor": "pointer"
-      });
-      var $moreInfo = $("<p>").text("More Info").css({
-        "marginBottom": "0px"
-      });
+      function createMoreInfoInterface() {
+        var $moreInfoRow = $("<div>").addClass("row more-info-row");
+        var $moreInfoCol = $("<div>").addClass("col-xs-12 more-info-col center-text");
+        var $arrowCol = $("<div>").addClass("col-xs-12 arrow-col center-text");
+        var $arrow = $("<img>").attr("src", "down-arrow.png").css({
+          "width": "30px",
+          "cursor": "pointer"
+        });
+        var $moreInfo = $("<p>").text("More Info").css({
+          "marginBottom": "0px"
+        });
 
-      $arrow.on("mouseenter", function(e) {
-        e.stopPropagation();
-        $arrow.css("opacity", "0.5");
-      });
-      $arrow.on("mouseleave", function(e) {
-        e.stopPropagation();
-        $arrow.css("opacity", "1");
-      });
-      $arrow.on("click", function(e) {
-        e.stopPropagation();
-        showMoreInfo();
-      });
-
+        $arrow.on("mouseenter", function(e) {
+          e.stopPropagation();
+          $arrow.css("opacity", "0.5");
+        });
+        $arrow.on("mouseleave", function(e) {
+          e.stopPropagation();
+          $arrow.css("opacity", "1");
+        });
+        $arrow.on("click", function(e) {
+          e.stopPropagation();
+          // Remove Button
+          $moreInfoRow.remove();
+          // Add Horizontal Line Break
+          var $line = $("<hr>").addClass("line-style");
+          $line.css({
+            "color": "black",
+            "marginTop": "0px",
+            "marginBottom": "0px"
+          });
+          $infoDiv.append($line);
+          // Show More Info
+          showMoreInfo(object);
+        });
+        // Append More Info Link
+        console.log("test");
+        $moreInfoCol.append($moreInfo);
+        $arrowCol.append($arrow);
+        $moreInfoRow.append($moreInfoCol).append($arrowCol);
+        $infoDiv.append($moreInfoRow);
+      }
       /** Append Everything **/
       // Append Info Div
       $mainContainer.append($infoDiv);
@@ -212,17 +231,75 @@ $(document).ready(function() {
       $infoCol.append($synopsis);
       $infoRow.append($infoCol);
       $infoDiv.append($infoRow);
-      // Append More Info Link
-      $moreInfoCol.append($moreInfo);
-      $arrowCol.append($arrow);
-      $moreInfoRow.append($moreInfoCol).append($arrowCol);
-      $infoDiv.append($moreInfoRow);
+
+      createMoreInfoInterface();
+
     }
 
-  }
+    function showMoreInfo(object) {
+      var $moreInfoRow = $("row.more-info-row");
+      // Add More Info Header
+      var $moreInfoHeaderRow = $("<div>").addClass("row more-info-header-row center-text");
+      var $moreInfoHeaderCol = $("<div>").addClass("col-xs-12 more-info-header-col center-text");
+      var $moreInfoHeader = $("<h2>").text("More Info").addClass("more-info-header").css({
+        "fontSize": "25px",
+        "marginBottom": "20px"
+      });
+      // Add Info Row
+      var $infoRow = $("<div>").addClass("row info-row");
+      // Add Data
+      var $runtime = $("<div>").text("Runtime: " + object.Runtime).addClass("col-xs-12 center-text runtime");
+      var $director = $("<div>").text("Director: " + object.Director).addClass("col-xs-12 center-text director");
+      var $year = $("<div>").text("Release Year: " + object.Year).addClass("col-xs-12 center-text year");
 
-  function showMoreInfo(object) {
-    alert("works!");
-    // Delete More Info+DownArrow, and replace with Less Info+UpArrow
+      // Add Less Info Button
+      var $lessInfoRow = $("<div>").addClass("row less-info-row");
+      var $lessInfoCol = $("<div>").addClass("col-xs-12 less-info-col center-text");
+      var $lessInfo = $("<p>").addClass("less-info").text("Less Info").css({
+        "marginBottom": "0px",
+        "marginTop": "20px"
+      });
+      var $upArrowCol = $("<div>").addClass("col-xs-12 up-arrow-col center-text");
+      var $upArrow = $("<img>").attr("src", "up-arrow.png").css("width", "33px");
+
+      $upArrow.on("click", function(e) {
+        var $line = $("hr.line-style");
+
+        e.stopPropagation();
+
+        $lessInfoRow.remove();
+        $infoRow.remove();
+        $moreInfoHeaderRow.remove();
+        $line.remove();
+        createMoreInfoInterface();
+      })
+      $upArrow.on("mouseenter", function(e){
+        e.stopPropagation();
+        $upArrow.css("opacity", "0.5");
+      })
+      $upArrow.on("mouseleave", function(e){
+        e.stopPropagation();
+        $upArrow.css("opacity", "1");
+      })
+
+      /** Append Everything **/
+      // Append More Info Header
+      $moreInfoHeaderCol.append($moreInfoHeader);
+      $moreInfoHeaderRow.append($moreInfoHeaderCol);
+      $infoDiv.append($moreInfoHeaderRow);
+      // Append Info Columns
+      $infoRow.append($runtime);
+      $infoRow.append($director);
+      $infoRow.append($year);
+      // Append Less Info Button
+      $upArrowCol.append($upArrow);
+      $lessInfoCol.append($lessInfo);
+      $lessInfoRow.append($lessInfoCol).append($upArrowCol);
+      // Append to main div
+      $infoDiv.append($infoRow);
+      $infoDiv.append($lessInfoRow);
+
+      // replace with Less Info+UpArrow
+    }
   }
 })

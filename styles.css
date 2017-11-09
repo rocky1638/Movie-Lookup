@@ -40,7 +40,34 @@ div.title-row {
   margin-top: 30px;
 }
 
+li:before {
+    content: "►";
+    display: block;
+    float: left;
+    width: 1.2em;
+    color: black;
+    margin-left: 15px;
+}
+
+div.info-row div {
+  padding-bottom: 5px;
+}
 /** Defaults **/
 .center-text {
   text-align: center;
+}
+
+/** Horizontal Line **/
+.line-style {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+/** Custom UL styles **/
+.list-style {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
 }
